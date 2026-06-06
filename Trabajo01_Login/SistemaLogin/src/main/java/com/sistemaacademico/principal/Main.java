@@ -1,23 +1,21 @@
 package com.sistemaacademico.principal;
 
-import com.sistemaacademico.conexion.ConexionBD;
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.sistemaacademico.dao.UsuarioDAO;
+import com.sistemaacademico.modelo.Usuario;
 
 public class Main {
 
     public static void main(String[] args) {
-        try {
-            Connection conexion = ConexionBD.obtenerConexion();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-            if (conexion != null) {
-                System.out.println("Conexión exitosa a la base de datos.");
-                conexion.close();
-            }
+        Usuario usuario = usuarioDAO.validarLogin("admin", "123456");
 
-        } catch (SQLException e) {
-            System.out.println("Error al conectar con la base de datos.");
-            System.out.println("Detalle: " + e.getMessage());
+        if (usuario != null) {
+            System.out.println("Login correcto.");
+            System.out.println("Usuario: " + usuario.getUsuario());
+            System.out.println("Rol ID: " + usuario.getIdRol());
+        } else {
+            System.out.println("Usuario o clave incorrectos.");
         }
     }
 }
